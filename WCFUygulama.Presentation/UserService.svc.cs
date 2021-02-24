@@ -56,16 +56,16 @@ namespace WCFUygulama.Presentation
         {
             try
             {
-                if (!(userDto.id==null||userDto.id==0))
+                if (!(userDto.id==0))
                 {
-                    
-                    if ((unitOfWork.UserRepository.Get(userDto.id)== null))
+                    var result = unitOfWork.UserRepository.Get(userDto.id);
+                    if ((result == null))
                     {
-                        ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Gone;
+                        ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                     }
                     else
                     {
-                        unitOfWork.UserRepository.Del(unitOfWork.UserRepository.Get(userDto.id));
+                        unitOfWork.UserRepository.Del(result);
                         ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
                     }
                      
@@ -91,7 +91,7 @@ namespace WCFUygulama.Presentation
         {
             try
             {
-                if (id==0||id==null)
+                if (id==0)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                     return new UserDto();
@@ -99,7 +99,7 @@ namespace WCFUygulama.Presentation
                 var result = unitOfWork.UserRepository.Get(id);
                 if (result==null)
                 {
-                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Gone;
+                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                     return new UserDto();
                 }
                 Data.DTO.UserDto userDto = new UserDto
@@ -126,7 +126,7 @@ namespace WCFUygulama.Presentation
         {
             try
             {
-                if (id == 0 || id == null || saveUserDto.name == null || saveUserDto.password == null || saveUserDto.userName == null)
+                if (id == 0 || saveUserDto.name == null || saveUserDto.password == null || saveUserDto.userName == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 }
@@ -136,7 +136,7 @@ namespace WCFUygulama.Presentation
                     var result = unitOfWork.UserRepository.Get(id);
                     if (result == null)
                     {
-                        ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Gone;
+                        ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                     }
                     else
                     {

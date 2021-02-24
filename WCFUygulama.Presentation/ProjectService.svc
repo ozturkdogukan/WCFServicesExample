@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WCFUygulama.Presentation.ProjectService" CodeBehind="ProjectService.svc.cs" %>

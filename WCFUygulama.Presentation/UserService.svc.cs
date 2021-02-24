@@ -14,48 +14,149 @@ namespace WCFUygulama.Presentation
     public class UserService : IUserService
     {
         DataAccess.UnitOfWork.UnitOfWork unitOfWork = new DataAccess.UnitOfWork.UnitOfWork(new Data.Database.tablolarEntities());
+        WebOperationContext ctx = WebOperationContext.Current;
         public void AddUser(SaveUserDto saveUserDto)
         {
-            Data.Database.user user = new Data.Database.user
-            {
-                id = 0,
-                name = saveUserDto.name,
-                password = saveUserDto.password,
-                username = saveUserDto.userName
-            };
+            
+            
+                Data.Database.user user = new Data.Database.user
+                {
+                    id = 0,
+                    name = saveUserDto.name,
+                    password = saveUserDto.password,
+                    username = saveUserDto.userName
+                };
 
-            unitOfWork.UserRepository.Add(user);
-            unitOfWork.Complete();
+            try
+            {
+                if (!(user.name==null||user.password==null||user.username==null))
+                {
+                    unitOfWork.UserRepository.Add(user);
+                    unitOfWork.Complete();
+                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
+
+                }
+                else
+                {
+                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                }
+              
+            }
+            catch (Exception)
+            {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+               
+            }
+            
+
+           
         }
 
         public void DelUser(UserDto userDto)
         {
-            var result = unitOfWork.UserRepository.Get(userDto.id);
-            unitOfWork.UserRepository.Del(result);
+            try
+            {
+                if (!(userDto.id==null||userDto.id==0))
+                {
+                    
+                    if ((unitOfWork.UserRepository.Get(userDto.id)== null))
+                    {
+                        ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Gone;
+                    }
+                    else
+                    {
+                        unitOfWork.UserRepository.Del(unitOfWork.UserRepository.Get(userDto.id));
+                        ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
+                    }
+                     
+                    
+                }
+                else
+                {
+                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                }
+                
+            }
+            catch (Exception)
+            {
+
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+            }
+            
+
         }
 
 
         public UserDto GetUser(int id)
         {
-            var result = unitOfWork.UserRepository.Get(id);
-            Data.DTO.UserDto userDto = new UserDto
+            try
             {
-                id = result.id,
-                name = result.name,
-                userName = result.username
-            };
+                if (id==0||id==null)
+                {
+                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    return new UserDto();
+                }
+                var result = unitOfWork.UserRepository.Get(id);
+                if (result==null)
+                {
+                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Gone;
+                    return new UserDto();
+                }
+                Data.DTO.UserDto userDto = new UserDto
+                {
+                    id = result.id,
+                    name = result.name,
+                    userName = result.username
+                };
 
-            return userDto;
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
+                
+                return userDto;
+
+            }
+            catch (Exception)
+            {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                throw;
+            }
+            
         }
 
         public void SetUser(int id ,SaveUserDto saveUserDto)
         {
-           var result =  unitOfWork.UserRepository.Get(id);
-            result.name = saveUserDto.name;
-            result.password = saveUserDto.password;
-            result.username = saveUserDto.userName;
-            unitOfWork.UserRepository.Set(result);
-            unitOfWork.Complete();
+            try
+            {
+                if (id == 0 || id == null || saveUserDto.name == null || saveUserDto.password == null || saveUserDto.userName == null)
+                {
+                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                }
+                else
+                {
+
+                    var result = unitOfWork.UserRepository.Get(id);
+                    if (result == null)
+                    {
+                        ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.Gone;
+                    }
+                    else
+                    {
+                        result.name = saveUserDto.name;
+                        result.password = saveUserDto.password;
+                        result.username = saveUserDto.userName;
+                        unitOfWork.UserRepository.Set(result);
+                        unitOfWork.Complete();
+                        ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
+                throw;
+            }
+            
+
+           
           
         }
     }

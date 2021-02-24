@@ -66,11 +66,12 @@ namespace WCFUygulama.DataAccess.Repository
             try
             {
                 Context.SaveChanges();
+                
             }
             catch (Exception)
             {
-
                 throw;
+                
             }
         }
     }

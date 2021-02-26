@@ -1,1 +1,1 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="WCFUygulama.Presentation.UserService" CodeBehind="UserService.svc.cs" %>
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="WCFUygulama.Presentation.Services.UserService" %>

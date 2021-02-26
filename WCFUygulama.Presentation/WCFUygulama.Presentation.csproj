@@ -105,15 +105,11 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IProjectService.cs" />
-    <Compile Include="IUserService.cs" />
-    <Compile Include="ProjectService.svc.cs">
-      <DependentUpon>ProjectService.svc</DependentUpon>
-    </Compile>
+    <Compile Include="Interfaces\IProjectService.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserService.svc.cs">
-      <DependentUpon>UserService.svc</DependentUpon>
-    </Compile>
+    <Compile Include="Services\ProjectService.cs" />
+    <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

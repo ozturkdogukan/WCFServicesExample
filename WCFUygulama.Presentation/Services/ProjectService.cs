@@ -7,10 +7,8 @@ using System.ServiceModel.Web;
 using System.Text;
 using WCFUygulama.Data.DTO;
 
-namespace WCFUygulama.Presentation
+namespace WCFUygulama.Presentation.Services
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "ProjectService" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select ProjectService.svc or ProjectService.svc.cs at the Solution Explorer and start debugging.
     public class ProjectService : IProjectService
     {
         DataAccess.UnitOfWork.UnitOfWork unitOfWork = new DataAccess.UnitOfWork.UnitOfWork(new Data.Database.tablolarEntities());
@@ -76,7 +74,7 @@ namespace WCFUygulama.Presentation
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 throw;
             }
-            
+
 
 
         }
@@ -85,13 +83,13 @@ namespace WCFUygulama.Presentation
         {
             try
             {
-                if (projectDto.id==0)
+                if (projectDto.id == 0)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 }
                 var result = unitOfWork.ProjectRepository.Get(projectDto.id);
 
-                if (result==null)
+                if (result == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                 }
@@ -107,25 +105,25 @@ namespace WCFUygulama.Presentation
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
                 throw;
             }
-           
+
         }
 
         public void DelProjectRole(ProjectRoleDto projectRoleDto)
         {
             try
             {
-                if (projectRoleDto.id==0)
+                if (projectRoleDto.id == 0)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 }
                 var result = unitOfWork.ProjectRoleRepository.Get(projectRoleDto.id);
-                if (result==null)
+                if (result == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                 }
                 else
                 {
-                    
+
                     unitOfWork.ProjectRoleRepository.Del(result);
                     unitOfWork.Complete();
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
@@ -137,7 +135,7 @@ namespace WCFUygulama.Presentation
                 throw;
             }
 
-           
+
         }
 
         public ProjectDto GetProject(int id)
@@ -172,21 +170,21 @@ namespace WCFUygulama.Presentation
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 throw;
             }
-          
-            
+
+
         }
 
         public List<ProjectRoleDto> GetProjectRoles(int id)
         {
             try
             {
-                if (id==0)
+                if (id == 0)
                 {
-                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
+                    ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                     return new List<ProjectRoleDto>();
                 }
                 var result = unitOfWork.ProjectRoleRepository.GetProjectRoles(id);
-                if (result==null)
+                if (result == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                     return new List<ProjectRoleDto>();
@@ -221,20 +219,20 @@ namespace WCFUygulama.Presentation
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 throw;
             }
-            
-            
+
+
         }
 
         public void SetProject(ProjectDto projectDto)
         {
             try
             {
-                if (projectDto.id==0||projectDto.projectName==null)
+                if (projectDto.id == 0 || projectDto.projectName == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 }
                 var result = unitOfWork.ProjectRepository.Get(projectDto.id);
-                if (result==null)
+                if (result == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                 }
@@ -251,7 +249,7 @@ namespace WCFUygulama.Presentation
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 throw;
             }
-          
+
 
         }
 
@@ -259,13 +257,13 @@ namespace WCFUygulama.Presentation
         {
             try
             {
-                if (projectRoleDto.id == 0 || projectRoleDto.projectId==0||
-                    projectRoleDto.projectName==null||projectRoleDto.userId==0||projectRoleDto.userName==null)
+                if (projectRoleDto.id == 0 || projectRoleDto.projectId == 0 ||
+                    projectRoleDto.projectName == null || projectRoleDto.userId == 0 || projectRoleDto.userName == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 }
                 var result = unitOfWork.ProjectRoleRepository.Get(projectRoleDto.id);
-                if (result==null)
+                if (result == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                 }
@@ -283,8 +281,8 @@ namespace WCFUygulama.Presentation
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 throw;
             }
-           
-          
+
+
         }
     }
 }

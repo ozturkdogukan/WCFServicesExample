@@ -1,35 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
 using System.ServiceModel.Web;
-using System.Text;
+using System.Web;
 using WCFUygulama.Data.DTO;
 
-namespace WCFUygulama.Presentation
+namespace WCFUygulama.Presentation.Services
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "UserService" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select UserService.svc or UserService.svc.cs at the Solution Explorer and start debugging.
     public class UserService : IUserService
     {
         DataAccess.UnitOfWork.UnitOfWork unitOfWork = new DataAccess.UnitOfWork.UnitOfWork(new Data.Database.tablolarEntities());
         WebOperationContext ctx = WebOperationContext.Current;
         public void AddUser(SaveUserDto saveUserDto)
         {
-            
-            
-                Data.Database.user user = new Data.Database.user
-                {
-                    id = 0,
-                    name = saveUserDto.name,
-                    password = saveUserDto.password,
-                    username = saveUserDto.userName
-                };
+
+
+            Data.Database.user user = new Data.Database.user
+            {
+                id = 0,
+                name = saveUserDto.name,
+                password = saveUserDto.password,
+                username = saveUserDto.userName
+            };
 
             try
             {
-                if (!(user.name==null||user.password==null||user.username==null))
+                if (!(user.name == null || user.password == null || user.username == null))
                 {
                     unitOfWork.UserRepository.Add(user);
                     unitOfWork.Complete();
@@ -40,23 +36,23 @@ namespace WCFUygulama.Presentation
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 }
-              
+
             }
             catch (Exception)
             {
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
-               
-            }
-            
 
-           
+            }
+
+
+
         }
 
         public void DelUser(UserDto userDto)
         {
             try
             {
-                if (!(userDto.id==0))
+                if (!(userDto.id == 0))
                 {
                     var result = unitOfWork.UserRepository.Get(userDto.id);
                     if ((result == null))
@@ -68,21 +64,21 @@ namespace WCFUygulama.Presentation
                         unitOfWork.UserRepository.Del(result);
                         ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
                     }
-                     
-                    
+
+
                 }
                 else
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                 }
-                
+
             }
             catch (Exception)
             {
 
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
             }
-            
+
 
         }
 
@@ -91,13 +87,13 @@ namespace WCFUygulama.Presentation
         {
             try
             {
-                if (id==0)
+                if (id == 0)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
                     return new UserDto();
                 }
                 var result = unitOfWork.UserRepository.Get(id);
-                if (result==null)
+                if (result == null)
                 {
                     ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.NotFound;
                     return new UserDto();
@@ -110,7 +106,7 @@ namespace WCFUygulama.Presentation
                 };
 
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.OK;
-                
+
                 return userDto;
 
             }
@@ -119,10 +115,10 @@ namespace WCFUygulama.Presentation
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 throw;
             }
-            
+
         }
 
-        public void SetUser(int id ,SaveUserDto saveUserDto)
+        public void SetUser(int id, SaveUserDto saveUserDto)
         {
             try
             {
@@ -154,10 +150,11 @@ namespace WCFUygulama.Presentation
                 ctx.OutgoingResponse.StatusCode = System.Net.HttpStatusCode.InternalServerError;
                 throw;
             }
-            
 
-           
-          
+
+
+
         }
+
     }
 }

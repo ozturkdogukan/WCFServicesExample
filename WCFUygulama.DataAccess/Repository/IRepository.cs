@@ -8,9 +8,6 @@ namespace WCFUygulama.DataAccess.Repository
 {
     public interface IRepository<T> where T: class
     {
-        
-
-
 
         void Add(T entity);
 
@@ -19,6 +16,8 @@ namespace WCFUygulama.DataAccess.Repository
         void Set(T entity);
 
         void Del(T entity);
+
+        List<Data.Database.projectroles> GetProjectRoles(int projectId);
 
 
     }

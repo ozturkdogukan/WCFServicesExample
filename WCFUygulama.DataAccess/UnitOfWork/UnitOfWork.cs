@@ -9,30 +9,29 @@ namespace WCFUygulama.DataAccess.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private Data.Database.tablolarEntities _context;
+        protected Data.Database.tablolarEntities _context;
         public UnitOfWork(Data.Database.tablolarEntities context)
         {
+            if (context==null)
+            {
+                context = new Data.Database.tablolarEntities();
+            }
+
             _context = context;
-            UserRepository = new UserRepository(_context);
-            ProjectRepository = new ProjectRepository(_context);
-            ProjectRoleRepository = new ProjectRoleRepository(_context);
         }
-
-        public IUserRepository UserRepository { get; private set; }
-
-        public IProjectRepository ProjectRepository { get; private set; }
-
-        public IProjectRoleRepository ProjectRoleRepository { get; private set; }
-
         public int Complete()
         {
             return _context.SaveChanges();
-
         }
 
         public void Dispose()
         {
             _context.Dispose();
+        }
+
+        public IRepository<T> GetRepository<T>() where T : class
+        {
+            return new RepositoryBase<T>(_context);
         }
     }
 }

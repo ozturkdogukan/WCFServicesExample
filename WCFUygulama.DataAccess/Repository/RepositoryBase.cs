@@ -3,34 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WCFUygulama.Data.Database;
 
 namespace WCFUygulama.DataAccess.Repository
 {
-    public class RepositoryBase<TT> : IRepository<TT> where TT : class
+    public class RepositoryBase<TT> : IRepository<TT> where TT: class
     {
         protected Data.Database.tablolarEntities context;
+
+        public RepositoryBase(tablolarEntities context)
+        {
+            if (context == null)
+            {
+                context = new Data.Database.tablolarEntities();
+            }
+            this.context = context;
+        }
+
         // Singleton Pattern : Uygulamanın tek context veya tek connection üzerinden 
         // işlem yapmasının sağlandığı tasarım desenidir.
 
-        public Data.Database.tablolarEntities Context
-        {
-            get {
-                if (context == null)
-                {
-                    context = new Data.Database.tablolarEntities();
-                }
-                
-                return context; }
-            set { context = value; }
-        }
+        
 
 
-        public void Add(TT entity)
+        public void Add(TT entity) 
         {
-            Context.Set<TT>().Add(entity);
+            context.Set<TT>().Add(entity);
             try
             {
-                Context.SaveChanges();
+                context.SaveChanges();
 
             }
             catch (Exception)
@@ -41,16 +42,16 @@ namespace WCFUygulama.DataAccess.Repository
             
         }
 
-        public TT Get(int userid)
+        public TT Get(int userid) 
         {
-            return Context.Set<TT>().Find(userid);
+            return context.Set<TT>().Find(userid);
         }
 
-        public void Set(TT entity)
+        public void Set(TT entity) 
         {
             try
             {
-                Context.SaveChanges();
+                context.SaveChanges();
 
             }
             catch (Exception)
@@ -62,10 +63,10 @@ namespace WCFUygulama.DataAccess.Repository
 
         public void Del(TT entity)
         {
-            Context.Set<TT>().Remove(entity);
+            context.Set<TT>().Remove(entity);
             try
             {
-                Context.SaveChanges();
+                context.SaveChanges();
                 
             }
             catch (Exception)
@@ -73,6 +74,12 @@ namespace WCFUygulama.DataAccess.Repository
                 throw;
                 
             }
+        }
+
+        public List<projectroles> GetProjectRoles(int projectId)
+        {
+            var result = context.Set<Data.Database.projectroles>().Where(x => x.projectid == projectId).ToList();
+            return result;
         }
     }
 }

@@ -6,14 +6,9 @@ using System.Threading.Tasks;
 
 namespace WCFUygulama.DataAccess.UnitOfWork
 {
-    public interface IUnitOfWork:IDisposable
+    public interface IUnitOfWork : IDisposable
     {
-        DataAccess.Repository.IUserRepository UserRepository { get; }
-
-        DataAccess.Repository.IProjectRepository ProjectRepository { get; }
-        
-        DataAccess.Repository.IProjectRoleRepository ProjectRoleRepository { get; }
-
+        DataAccess.Repository.IRepository<T> GetRepository<T>() where T : class;
         int Complete();
     
     }

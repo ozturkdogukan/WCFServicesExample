@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WCFUygulama.DataAccess.Repository;
+﻿using WCFUygulama.DataAccess.Repository;
+using WCFUygulama.Data.Database;
 
 namespace WCFUygulama.DataAccess.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        protected Data.Database.tablolarEntities _context;
-        public UnitOfWork(Data.Database.tablolarEntities context)
+        protected tablolarEntities _context;
+        public UnitOfWork(tablolarEntities context)
         {
-            if (context==null)
+
+            if (context == null)
             {
-                context = new Data.Database.tablolarEntities();
+                context = new tablolarEntities();
             }
 
             _context = context;
